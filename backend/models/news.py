@@ -17,6 +17,13 @@ class NewsStatus(str, Enum):
     VERIFIED = "verified"
     REJECTED = "rejected"
 
+class NewsStepDetail(BaseModel):
+    step: NewsStep
+    validator: str
+    result: Dict[str, Any]
+    timestamp: str
+    blockchain_tx: str  # Added for per-step TX
+
 class NewsCreateRequest(BaseModel):
     title: str
     content: str
@@ -25,7 +32,6 @@ class NewsCreateRequest(BaseModel):
 class NewsStepValidationRequest(BaseModel):
     news_id: str
     step: NewsStep
-    validator: str  # user or system
     result: Dict[str, Any]
 
 class NewsResponse(BaseModel):
@@ -34,7 +40,7 @@ class NewsResponse(BaseModel):
     content: str
     author: str
     status: NewsStatus
-    steps: List[Dict[str, Any]]  # Each step: {step, validator, result, timestamp}
+    steps: List[NewsStepDetail]  # Now uses StepDetail model
     blockchain_tx: Optional[str] = None
 
 class NewsListResponse(BaseModel):

@@ -7,10 +7,26 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 
 from backend.models.news import (
-    NewsCreateRequest, NewsStepValidationRequest, NewsResponse, NewsStatus, NewsStep
+    NewsCreateRequest, NewsStepValidationRequest, NewsResponse,
+    NewsStatus, NewsStep, NewsStepDetail
 )
 
-# In-memory DB for demo (replace with real DB in prod)
+# Step sequence enforcement
+VALID_STEPS_ORDER = [
+    NewsStep.AI_ANALYSIS,
+    NewsStep.COMMUNITY_ANALYSIS,
+    NewsStep.PERSON_QUESTION,
+    NewsStep.AUTHOR_QUESTION
+]
+
+# Role permissions mapping
+STEP_REQUIRED_ROLES = {
+    NewsStep.AI_ANALYSIS: ["ai"],
+    NewsStep.COMMUNITY_ANALYSIS: ["community"],
+    NewsStep.PERSON_QUESTION: ["moderator"],
+    NewsStep.AUTHOR_QUESTION: ["moderator"]
+}
+
 _FAKE_DB: Dict[str, Dict[str, Any]] = {}
 
 class NewsService:
@@ -37,20 +53,45 @@ class NewsService:
     def list_news(self) -> List[NewsResponse]:
         return [NewsResponse(**n) for n in _FAKE_DB.values()]
 
-    def validate_step(self, data: NewsStepValidationRequest) -> NewsResponse:
+    def validate_step(
+        self,
+        data: NewsStepValidationRequest,
+        validator: str,
+        validator_role: str
+    ) -> NewsResponse:
         news = _FAKE_DB.get(data.news_id)
         if not news:
             raise ValueError("News not found")
-        step_record = {
-            "step": data.step,
-            "validator": data.validator,
-            "result": data.result,
-            "timestamp": datetime.utcnow().isoformat()
-        }
-        news["steps"].append(step_record)
-        # If last step, mark as VERIFIED and simulate blockchain tx
+
+        # Step 1: Validate step order
+        current_steps = news["steps"]
+        if current_steps:
+            last_step = current_steps[-1].step if isinstance(current_steps[-1], NewsStepDetail) else current_steps[-1]["step"]
+            expected_next_step = VALID_STEPS_ORDER[VALID_STEPS_ORDER.index(last_step) + 1]
+            if data.step != expected_next_step:
+                raise ValueError(f"Invalid step order. Expected {expected_next_step}")
+        else:
+            if data.step != NewsStep.AI_ANALYSIS:
+                raise ValueError("First step must be AI analysis")
+
+        required_roles = STEP_REQUIRED_ROLES.get(data.step, [])
+        if validator_role not in required_roles:
+            raise ValueError(f"Role {validator_role} cannot validate {data.step}")
+
+        tx_hash = f"tx_{uuid.uuid4().hex[:10]}"  # Replace with real blockchain call
+
+        step_detail = NewsStepDetail(
+            step=data.step,
+            validator=validator,
+            result=data.result,
+            timestamp=datetime.utcnow().isoformat(),
+            blockchain_tx=tx_hash
+        )
+
+        news["steps"].append(step_detail)
+
         if data.step == NewsStep.AUTHOR_QUESTION:
             news["status"] = NewsStatus.VERIFIED
-            news["blockchain_tx"] = f"tx_{uuid.uuid4().hex[:10]}"
+
         _FAKE_DB[data.news_id] = news
         return NewsResponse(**news)
