@@ -20,12 +20,18 @@ router = APIRouter(
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Mock authentication (replace with real implementation)
+# In backend/api/endpoints/news.py
+# In backend/api/endpoints/news.py
 async def get_current_user(token: str = Depends(oauth2_scheme)):
-    """Example: Decode token to get user/role (mocked here)"""
-    return {
-        "username": "system_ai",
-        "role": "ai"
-    }
+    """Mocked user roles based on token"""
+    if token == "fake_ai_token":
+        return {"username": "ai_system", "role": "ai"}
+    elif token == "fake_community_token":
+        return {"username": "community_user", "role": "community"}
+    elif token == "fake_moderator_token":  # Add this case
+        return {"username": "moderator_jane", "role": "moderator"}
+    else:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 def get_news_service():
     return NewsService()
@@ -67,3 +73,15 @@ def validate_step(
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+    # Inside news.py
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    """Mocked user roles based on token"""
+    if token == "fake_ai_token":
+        return {"username": "ai_system", "role": "ai"}
+    elif token == "fake_community_token":
+        return {"username": "community_user", "role": "community"}
+    elif token == "fake_moderator_token":
+        return {"username": "moderator_john", "role": "moderator"}
+    else:
+        raise HTTPException(status_code=401, detail="Invalid token")
