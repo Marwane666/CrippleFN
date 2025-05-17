@@ -8,6 +8,8 @@ import ResultsPage from './pages/ResultsPage';
 import DashboardPage from './pages/DashboardPage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from './pages/LoginPage';
+import ArchivePage from './pages/ArchivePage';
 import './App.css';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
           <Route path="/results/:id" element={<ResultsPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/archive" element={<ArchivePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

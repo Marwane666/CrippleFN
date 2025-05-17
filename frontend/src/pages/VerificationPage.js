@@ -34,19 +34,57 @@ const VerificationPage = () => {
     }
     
     setIsLoading(true);
-    
+
     try {
       // Préparer les données à envoyer
       const formData = new FormData();
-      
+      let newNews = null;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR');
       if (activeTab === 'text') {
         formData.append('text', textInput);
+        newNews = {
+          id: 'n_' + Math.random().toString(36).substr(2, 9),
+          title: textInput.slice(0, 60) + (textInput.length > 60 ? '...' : ''),
+          description: textInput,
+          date: dateStr,
+          status: 'pending',
+          link: '',
+          imageUrl: '/assets/fake-news-example.jpg',
+          sources: [],
+        };
       } else if (activeTab === 'url') {
         formData.append('urls', urlInput);
+        newNews = {
+          id: 'n_' + Math.random().toString(36).substr(2, 9),
+          title: urlInput,
+          description: urlInput,
+          date: dateStr,
+          status: 'pending',
+          link: urlInput,
+          imageUrl: '/assets/fake-news-example.jpg',
+          sources: [],
+        };
       } else if (activeTab === 'file') {
         for (let i = 0; i < files.length; i++) {
           formData.append('files', files[i]);
         }
+        newNews = {
+          id: 'n_' + Math.random().toString(36).substr(2, 9),
+          title: files[0]?.name || 'Fichier',
+          description: files.map(f => f.name).join(', '),
+          date: dateStr,
+          status: 'pending',
+          link: '',
+          imageUrl: '/assets/fake-news-example.jpg',
+          sources: [],
+        };
+      }
+      // Ajout dans localStorage (pendingNews)
+      if (newNews) {
+        const pending = JSON.parse(window.localStorage.getItem('pendingNews') || '[]');
+        pending.push(newNews);
+        window.localStorage.setItem('pendingNews', JSON.stringify(pending));
       }
       
       // Simuler un appel API (à remplacer par l'appel réel)
@@ -55,7 +93,7 @@ const VerificationPage = () => {
         const verificationId = 'ver_' + Math.random().toString(36).substr(2, 9);
         
         // Rediriger vers la page des résultats
-        navigate(`/results/${verificationId}`);
+        navigate(`/dashboard`); // Redirige vers dashboard pour traiter la news
         
         setIsLoading(false);
       }, 2000);

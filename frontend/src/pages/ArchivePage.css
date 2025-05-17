@@ -1,0 +1,53 @@
+.archive-page {
+  padding: 40px 0;
+  background: #f8f9fa;
+  min-height: 80vh;
+}
+.archive-page .container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 32px 24px;
+}
+.archive-page h1 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+.archive-page p {
+  color: #666;
+  margin-bottom: 24px;
+}
+.archive-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.archive-table th, .archive-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+.archive-table th {
+  background: #f1f3f6;
+  font-weight: 600;
+}
+.archive-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-weight: 500;
+  color: #fff;
+  display: inline-block;
+}
+.archive-status-fake {
+  background: #e74c3c;
+}
+.archive-status-real {
+  background: #27ae60;
+}
+.archive-table a {
+  color: #1976d2;
+  text-decoration: underline;
+}

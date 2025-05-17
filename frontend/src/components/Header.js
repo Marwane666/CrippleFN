@@ -49,6 +49,14 @@ const Header = () => {
                 À propos
               </Link>
             </li>
+            <li>
+              <Link 
+                to="/archive" 
+                className={location.pathname === '/archive' ? 'active' : ''}
+              >
+                Archive
+              </Link>
+            </li>
           </ul>
         </nav>
         
