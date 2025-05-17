@@ -1,8 +1,8 @@
 # CrippleFN
 
-"La vérité est la base de la confiance, et la confiance est le fondement des relations durables. Sans vérité, la confiance s’effondre ; sans confiance, les liens entre les gens se brisent." - Confucius
+Truth is the basis of trust, and trust is the foundation of lasting relationships. Without truth, trust collapses; without trust, bonds between people are broken. 
 
-CrippleFN est une plateforme dédiée à la lutte contre la désinformation et les fake news. En combinant intelligence artificielle, participation active des citoyens, contestation des victimes et dernier mot des auteurs, elle génère une note de confiance transparente, horodatée et sécurisée grâce à la blockchain XRPL.
+CrippleFN is a platform dedicated to the fight against disinformation and fake news. By combining artificial intelligence, active citizen participation, victim protest and the last word of the perpetrators, it generates a transparent, time-stamped and secure note of trust thanks to the XRPL blockchain.
 
 ## Description
 
@@ -10,8 +10,8 @@ CrippleFN est une plateforme dédiée à la lutte contre la désinformation et l
 
 ## Installation
 
-[Instructions d'installation ici]
+[Installation instructions here]
 
-## Utilisation
+## Use
 
-[Instructions d'utilisation ici]
+[Instructions for use here]
