@@ -4,7 +4,7 @@ Ce projet est un [décrivez brièvement votre projet].
 
 ## Description
 
-[Une description plus détaillée de votre projet ici]
+CrippleFake est une plateforme dédiée à la lutte contre la désinformation et les fake news. En combinant intelligence artificielle, participation active des citoyens, contestation des victimes et dernier mot des auteurs, elle génère une note de confiance transparente, horodatée et sécurisée grâce à la blockchain XRPL.
 
 ## Installation
 
