@@ -12,6 +12,8 @@ from backend.models.news import (
 )
 from backend.services.xrpl_service import XRPLService
 from backend.utils.memo import encode_memo
+from backend.models.agents import AIAnalysisResponse
+
 
 # Step sequence enforcement
 VALID_STEPS_ORDER = [
@@ -94,18 +96,25 @@ class NewsService:
         if validator_role not in required_roles:
             raise ValueError(f"Le rôle {validator_role} ne peut pas valider cette étape")
 
-        # Enregistrement blockchain
-        tx_hash = await self._record_to_blockchain(
-            data.news_id, 
-            data.step.value,
-            data.result
-        )
+        # Simulation spécifique pour l'IA
+        if data.step == NewsStep.AI_ANALYSIS:
+            mock_result = AIAnalysisResponse(
+                verdict="true",
+                confidence=0.92,
+                explanation="Simulation: Contenu vérifié avec succès",
+            ).dict()
+        else:
+            # Gestion standard pour les autres étapes
+            mock_result = data.result
 
+        # Enregistrement blockchain
+        tx_hash = await self._record_to_blockchain(data.news_id, data.step.value, mock_result)
+        
         # Mise à jour de la publication
         step_detail = NewsStepDetail(
             step=data.step,
             validator=validator,
-            result=data.result,
+            result=mock_result,
             timestamp=datetime.utcnow().isoformat(),
             blockchain_tx=tx_hash
         )

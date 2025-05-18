@@ -19,6 +19,8 @@ app = FastAPI(
     version="0.1.0"
 )
 
+app.include_router(news.router, prefix="/news")  # <-- Préfixe "/news"
+
 # Configuration CORS pour permettre les requêtes du frontend
 app.add_middleware(
     CORSMiddleware,
@@ -32,7 +34,6 @@ app.add_middleware(
 from backend.api.endpoints import verification, agents
 
 # Inclure les routes dans l'application
-app.include_router(news.router)
 app.include_router(verification.router)
 app.include_router(agents.router)
 # app.include_router(user.router)

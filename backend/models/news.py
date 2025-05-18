@@ -31,8 +31,10 @@ class NewsCreateRequest(BaseModel):
 
 class NewsStepValidationRequest(BaseModel):
     news_id: str
-    step: NewsStep
-    result: Dict[str, Any]
+    step: str  
+    is_approved: bool
+    comment: Optional[str] = None
+    result: dict
 
 class NewsResponse(BaseModel):
     news_id: str

@@ -11,11 +11,12 @@ from backend.models.news import (
 )
 from backend.services.news_service import NewsService
 
-router = APIRouter(
-    prefix="/news",
-    tags=["news"],
-    responses={500: {"description": "Erreur interne du serveur"}},
-)
+router = APIRouter()
+
+
+@router.post("/", response_model=NewsResponse)  # <-- POST /news/
+def create_news(request: NewsCreateRequest):
+    return NewsService().create_news(request)
 
 oauth2_scheme =  HTTPBearer() 
 
