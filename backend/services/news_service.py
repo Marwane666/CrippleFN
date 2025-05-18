@@ -10,6 +10,8 @@ from backend.models.news import (
     NewsCreateRequest, NewsStepValidationRequest, NewsResponse,
     NewsStatus, NewsStep, NewsStepDetail
 )
+from backend.services.xrpl_service import XRPLService
+from backend.utils.memo import encode_memo
 
 # Step sequence enforcement
 VALID_STEPS_ORDER = [
@@ -30,6 +32,10 @@ STEP_REQUIRED_ROLES = {
 _FAKE_DB: Dict[str, Dict[str, Any]] = {}
 
 class NewsService:
+    def __init__(self):
+        self.xrpl = XRPLService()
+
+    # Existing CRUD methods (keep these)
     def create_news(self, data: NewsCreateRequest) -> NewsResponse:
         news_id = str(uuid.uuid4())
         news = {
@@ -39,47 +45,63 @@ class NewsService:
             "author": data.author,
             "status": NewsStatus.PENDING,
             "steps": [],
-            "blockchain_tx": None
+            "blockchain_tx": None,
+            "xrpl_metadata": None
         }
         _FAKE_DB[news_id] = news
         return NewsResponse(**news)
 
     def get_news(self, news_id: str) -> Optional[NewsResponse]:
         news = _FAKE_DB.get(news_id)
-        if news:
-            return NewsResponse(**news)
-        return None
+        return NewsResponse(**news) if news else None
 
     def list_news(self) -> List[NewsResponse]:
         return [NewsResponse(**n) for n in _FAKE_DB.values()]
 
-    def validate_step(
+    async def _record_to_blockchain(self, news_id: str, step: str, result: dict) -> str:
+        """Enregistre une étape de validation sur la blockchain XRPL"""
+        try:
+            memo_data = encode_memo({
+                "news_id": news_id,
+                "step": step,
+                "result": result
+            })
+            return await self.xrpl.anchor_validation_step(memo_data)
+        except Exception as e:
+            raise ValueError(f"Erreur blockchain : {str(e)}")
+
+    async def validate_step(
         self,
         data: NewsStepValidationRequest,
         validator: str,
         validator_role: str
     ) -> NewsResponse:
+        """Nouvelle version avec intégration blockchain"""
         news = _FAKE_DB.get(data.news_id)
         if not news:
-            raise ValueError("News not found")
+            raise ValueError("Publication introuvable")
 
-        # Step 1: Validate step order
+        # Validation de l'ordre des étapes
         current_steps = news["steps"]
         if current_steps:
             last_step = current_steps[-1].step if isinstance(current_steps[-1], NewsStepDetail) else current_steps[-1]["step"]
             expected_next_step = VALID_STEPS_ORDER[VALID_STEPS_ORDER.index(last_step) + 1]
             if data.step != expected_next_step:
-                raise ValueError(f"Invalid step order. Expected {expected_next_step}")
-        else:
-            if data.step != NewsStep.AI_ANALYSIS:
-                raise ValueError("First step must be AI analysis")
+                raise ValueError(f"Ordre des étapes invalide. Attendu : {expected_next_step}")
 
+        # Vérification des rôles
         required_roles = STEP_REQUIRED_ROLES.get(data.step, [])
         if validator_role not in required_roles:
-            raise ValueError(f"Role {validator_role} cannot validate {data.step}")
+            raise ValueError(f"Le rôle {validator_role} ne peut pas valider cette étape")
 
-        tx_hash = f"tx_{uuid.uuid4().hex[:10]}"  # Replace with real blockchain call
+        # Enregistrement blockchain
+        tx_hash = await self._record_to_blockchain(
+            data.news_id, 
+            data.step.value,
+            data.result
+        )
 
+        # Mise à jour de la publication
         step_detail = NewsStepDetail(
             step=data.step,
             validator=validator,
@@ -87,11 +109,13 @@ class NewsService:
             timestamp=datetime.utcnow().isoformat(),
             blockchain_tx=tx_hash
         )
-
         news["steps"].append(step_detail)
 
+        # Finalisation si dernière étape
         if data.step == NewsStep.AUTHOR_QUESTION:
             news["status"] = NewsStatus.VERIFIED
+            news["blockchain_tx"] = tx_hash
+            news["xrpl_metadata"] = await self.xrpl.fetch_transaction_metadata(tx_hash)
 
         _FAKE_DB[data.news_id] = news
         return NewsResponse(**news)

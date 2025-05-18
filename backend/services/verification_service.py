@@ -9,9 +9,9 @@ import json
 from datetime import datetime
 from fastapi import UploadFile
 
-from services.agent_service import AgentService
-from services.supabase_service import SupabaseService
-from models.verification import VerificationStatus
+from backend.services.agent_service import AgentService
+from backend.services.supabase_service import SupabaseService
+from backend.models.verification import VerificationStatus
 
 class VerificationService:
     """Service pour gérer les vérifications de contenu."""

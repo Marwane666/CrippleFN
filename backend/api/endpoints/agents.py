@@ -7,8 +7,8 @@ from fastapi.responses import JSONResponse
 from typing import List, Optional, Dict, Any
 import os
 
-from models.agents import TextAnalysisRequest, VisualAnalysisRequest, AnalysisResponse
-from services.agent_service import AgentService
+from backend.models.agents import TextAnalysisRequest, VisualAnalysisRequest, AnalysisResponse
+from backend.services.agent_service import AgentService
 
 router = APIRouter(
     prefix="/agents",

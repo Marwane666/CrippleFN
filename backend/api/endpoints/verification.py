@@ -9,8 +9,8 @@ import os
 import json
 from datetime import datetime
 
-from models.verification import VerificationRequest, VerificationResponse, VerificationStatus
-from services.verification_service import VerificationService
+from backend.models.verification import VerificationRequest, VerificationResponse, VerificationStatus
+from backend.services.verification_service import VerificationService
 
 router = APIRouter(
     prefix="/verification",

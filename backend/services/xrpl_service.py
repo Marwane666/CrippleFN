@@ -94,3 +94,15 @@ class XRPLService:
             "meta":         meta["meta"],
         }
         return insert("xrpl_scores", payload)
+    
+    # services/xrpl_service.py
+    async def anchor_validation_step(self, memo_data: str) -> str:
+        """Anchor a validation step to XRPL"""
+        memo = Memo(memo_data=memo_data)
+        tx = Payment(
+            account=self.hot_wallet.address,
+            destination=self.hot_wallet.address,  # Use same account for demo
+            amount="0",  # XRPL requires >0 amount
+            memos=[memo]
+        )
+        return await self._submit(tx, self.hot_wallet)

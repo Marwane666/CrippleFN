@@ -22,7 +22,7 @@ class NewsStepDetail(BaseModel):
     validator: str
     result: Dict[str, Any]
     timestamp: str
-    blockchain_tx: str  # Added for per-step TX
+    blockchain_tx: str 
 
 class NewsCreateRequest(BaseModel):
     title: str
@@ -40,8 +40,17 @@ class NewsResponse(BaseModel):
     content: str
     author: str
     status: NewsStatus
-    steps: List[NewsStepDetail]  # Now uses StepDetail model
+    steps: List[Dict[str, Any]]
     blockchain_tx: Optional[str] = None
+    xrpl_metadata: Optional[Dict] = None  # Add this field
 
 class NewsListResponse(BaseModel):
     news: List[NewsResponse]
+
+# models/news.py
+class ValidationStep(BaseModel):
+    step: NewsStep
+    validator: str
+    result: dict
+    timestamp: str
+    blockchain_tx: str
