@@ -6,19 +6,19 @@ from enum import Enum
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 
-# class AIVerdict(str, Enum):
-#     TRUE = "true"
-#     FAKE = "fake"
-#     UNCERTAIN = "uncertain"
+class AIVerdict(str, Enum):
+    TRUE = "true"
+    FAKE = "fake"
+    UNCERTAIN = "uncertain"
 
-# class AIAnalysisRequest(BaseModel):
-#     content: str  # Contenu de la news à analyser
+class AIAnalysisRequest(BaseModel):
+    content: str  # Contenu de la news à analyser
 
-# class AIAnalysisResponse(BaseModel):
-#     verdict: AIVerdict
-#     confidence: float  # Score de confiance entre 0 et 1
-#     explanation: str   # Explication textuelle
-#     model_version: str = "v1-simulated"
+class AIAnalysisResponse(BaseModel):
+    verdict: AIVerdict
+    confidence: float  # Score de confiance entre 0 et 1
+    explanation: str   # Explication textuelle
+    model_version: str = "v1-simulated"
 
 class AnalysisType(str, Enum):
     """Types d'analyse possibles pour l'agent de texte."""
