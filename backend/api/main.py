@@ -5,6 +5,7 @@ Initialise l'application, les routes et les dépendances.
 
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from backend.api.endpoints import news, verification, agents  # Updated import path
 import os
 from dotenv import load_dotenv
 
@@ -28,13 +29,14 @@ app.add_middleware(
 )
 
 # Importation des routes depuis les différents modules
-from api.endpoints import verification, agents, user, blockchain
+from backend.api.endpoints import verification, agents
 
 # Inclure les routes dans l'application
+app.include_router(news.router)
 app.include_router(verification.router)
 app.include_router(agents.router)
-app.include_router(user.router)
-app.include_router(blockchain.router)
+# app.include_router(user.router)
+# app.include_router(blockchain.router)
 
 @app.get("/")
 async def root():
