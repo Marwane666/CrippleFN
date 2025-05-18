@@ -1,4 +1,0 @@
-supabase             # dernière version 2.x disponible sur PyPI :contentReference[oaicite:0]{index=0}
-python-dotenv  # charge .env
-httpx               # dernière release avant 0.29, roues universelles pour Python 3.8–3.12 :contentReference[oaicite:1]{index=1}
-xrpl-py       # version stable LTS avec wheels py3-none-any :contentReference[oaicite:2]{index=2}
