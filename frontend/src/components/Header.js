@@ -1,10 +1,20 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
   const location = useLocation();
-  
+  const navigate = useNavigate();
+  const user = React.useMemo(() => {
+    const u = localStorage.getItem("cripplefn_user");
+    return u ? JSON.parse(u) : null;
+  }, [localStorage.getItem("cripplefn_user")]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("cripplefn_user");
+    navigate("/login");
+  };
+
   return (
     <header className="header">
       <div className="container header-container">
@@ -61,7 +71,16 @@ const Header = () => {
         </nav>
         
         <div className="user-actions">
-          <button className="btn-connect">Connexion</button>
+          {user ? (
+            <>
+              <span style={{ marginRight: 8 }}>
+                Bonjour, <Link to="/profile" style={{ color: '#1976d2', textDecoration: 'underline' }}>{user.firstName}</Link>
+              </span>
+              <button className="btn-connect" onClick={handleLogout}>Déconnexion</button>
+            </>
+          ) : (
+            <button className="btn-connect" onClick={() => navigate("/login")}>Connexion</button>
+          )}
         </div>
       </div>
     </header>

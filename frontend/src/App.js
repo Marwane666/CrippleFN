@@ -10,6 +10,7 @@ import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from './pages/LoginPage';
 import ArchivePage from './pages/ArchivePage';
+import UserProfilePage from './pages/UserProfilePage';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/archive" element={<ArchivePage />} />
+          <Route path="/profile" element={<UserProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
