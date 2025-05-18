@@ -7,8 +7,9 @@ from fastapi.responses import JSONResponse
 from typing import List, Optional, Dict, Any
 import os
 
-from backend.models.agents import TextAnalysisRequest, VisualAnalysisRequest, AnalysisResponse
-from backend.services.agent_service import AgentService
+from models.agents import TextAnalysisRequest, VisualAnalysisRequest, AnalysisResponse
+from services.agent_service import AgentService
+from api.dependencies.auth import get_current_user, get_service_role_client, get_auth_client
 
 router = APIRouter(
     prefix="/agents",
@@ -23,15 +24,20 @@ def get_agent_service():
 @router.post("/text", response_model=AnalysisResponse)
 async def analyze_text(
     request: TextAnalysisRequest,
-    service: AgentService = Depends(get_agent_service)
+    service: AgentService = Depends(get_agent_service),
+    user_info: Dict[str, Any] = Depends(get_current_user)
 ):
     """
     Analyse un texte à l'aide de l'agent IA de texte.
+    Nécessite un token JWT valide.
     
     - **text**: Le texte à analyser
     - **analysis_type**: Type d'analyse à effectuer
     """
     try:
+        # Utiliser le client avec le rôle approprié
+        supabase_client = await get_auth_client(user_info)
+        
         result = await service.analyze_text(
             text=request.text,
             analysis_type=request.analysis_type

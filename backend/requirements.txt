@@ -1,4 +1,23 @@
-supabase             # dernière version 2.x disponible sur PyPI :contentReference[oaicite:0]{index=0}
-python-dotenv  # charge .env
-httpx               # dernière release avant 0.29, roues universelles pour Python 3.8–3.12 :contentReference[oaicite:1]{index=1}
-xrpl-py       # version stable LTS avec wheels py3-none-any :contentReference[oaicite:2]{index=2}
+# Frameworks et serveur ASGI
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+
+# Agents et LLM
+mistralai>=1.7.0
+backoff>=2.2.1
+langchain==0.3.25
+langchain-mistralai==0.2.10
+langgraph==0.4.5
+openai==1.79.0
+
+# Client Supabase (Python >= 3.9)
+supabase==2.15.1
+
+# Requêtes HTTP pour API externes
+requests>=2.31.0
+
+# Chargement des variables d'environnement
+python-dotenv==1.1.0
+
+# Validation de données
+pydantic>=2.11.4
