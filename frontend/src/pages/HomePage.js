@@ -8,7 +8,7 @@ const HomePage = () => {
 
   const handleVerifyClick = () => {
     if (!user) {
-      navigate('/login', { state: { from: '/', message: "Vous devez être connecté pour vérifier un contenu." } });
+      navigate('/login', { state: { from: '/', message: "You must be logged in to verify content." } });
     } else {
       navigate('/verify');
     }
@@ -19,56 +19,55 @@ const HomePage = () => {
       <section className="hero">
         <div className="container">
           <div className="hero-content">
-            <h1>Luttez contre la désinformation avec CrippleFN</h1>
+            <h1>Fight disinformation with CrippleFN</h1>
             <p className="hero-subtitle">
-              La première plateforme utilisant l'IA multimodale et la blockchain pour vérifier 
-              l'authenticité des contenus et combattre les fake news.
+              The first platform using multimodal AI and blockchain to verify content authenticity and combat fake news.
             </p>
             <div className="hero-buttons">
-              <button onClick={handleVerifyClick} className="btn btn-primary">Vérifier un contenu</button>
-              <Link to="/about" className="btn btn-secondary">En savoir plus</Link>
+              <button onClick={handleVerifyClick} className="btn btn-primary">Verify content</button>
+              <Link to="/about" className="btn btn-secondary">Learn more</Link>
             </div>
           </div>
           <div className="hero-image">
-            <img src="/assets/hero-image.svg" alt="CrippleFN en action" />
+            <img src="/assets/hero-image.svg" alt="CrippleFN in action" />
           </div>
         </div>
       </section>
 
       <section className="features">
         <div className="container">
-          <h2 className="section-title">Fonctionnalités principales</h2>
+          <h2 className="section-title">Main Features</h2>
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">
-                <img src="/assets/text-analysis.svg" alt="Analyse de texte" />
+                <img src="/assets/text-analysis.svg" alt="Text analysis" />
               </div>
-              <h3>Analyse de texte</h3>
-              <p>Détection avancée des fake news et de la désinformation dans les articles et les posts.</p>
+              <h3>Text Analysis</h3>
+              <p>Advanced detection of fake news and disinformation in articles and posts.</p>
             </div>
             
             <div className="feature-card">
               <div className="feature-icon">
-                <img src="/assets/image-analysis.svg" alt="Analyse d'images" />
+                <img src="/assets/image-analysis.svg" alt="Image analysis" />
               </div>
-              <h3>Analyse d'images</h3>
-              <p>Détection de deepfakes et d'images manipulées avec une précision exceptionnelle.</p>
+              <h3>Image Analysis</h3>
+              <p>Detection of deepfakes and manipulated images with exceptional accuracy.</p>
             </div>
             
             <div className="feature-card">
               <div className="feature-icon">
                 <img src="/assets/blockchain.svg" alt="Blockchain" />
               </div>
-              <h3>Traçabilité blockchain</h3>
-              <p>Certification des vérifications sur la blockchain pour une transparence totale.</p>
+              <h3>Blockchain Traceability</h3>
+              <p>Certification of verifications on the blockchain for total transparency.</p>
             </div>
             
             <div className="feature-card">
               <div className="feature-icon">
-                <img src="/assets/community.svg" alt="Communauté" />
+                <img src="/assets/community.svg" alt="Community" />
               </div>
-              <h3>Vérification communautaire</h3>
-              <p>Système d'incitation pour encourager la participation à la vérification des faits.</p>
+              <h3>Community Verification</h3>
+              <p>Incentive system to encourage participation in fact-checking.</p>
             </div>
           </div>
         </div>
@@ -76,30 +75,30 @@ const HomePage = () => {
 
       <section className="how-it-works">
         <div className="container">
-          <h2 className="section-title">Comment ça marche ?</h2>
+          <h2 className="section-title">How does it work?</h2>
           <div className="steps">
             <div className="step">
               <div className="step-number">1</div>
-              <h3>Soumettez votre contenu</h3>
-              <p>Téléchargez un texte, une image ou une URL que vous souhaitez vérifier.</p>
+              <h3>Submit your content</h3>
+              <p>Upload a text, image, or URL you want to verify.</p>
             </div>
             
             <div className="step">
               <div className="step-number">2</div>
-              <h3>Analyse IA multimodale</h3>
-              <p>Nos agents IA analysent le contenu sous différents angles et contextes.</p>
+              <h3>Multimodal AI Analysis</h3>
+              <p>Our AI agents analyze the content from different angles and contexts.</p>
             </div>
             
             <div className="step">
               <div className="step-number">3</div>
-              <h3>Résultats détaillés</h3>
-              <p>Recevez une analyse complète avec un score de fiabilité et des explications.</p>
+              <h3>Detailed Results</h3>
+              <p>Receive a complete analysis with a reliability score and explanations.</p>
             </div>
             
             <div className="step">
               <div className="step-number">4</div>
-              <h3>Certification blockchain</h3>
-              <p>Le résultat est enregistré de manière permanente et transparent sur la blockchain.</p>
+              <h3>Blockchain Certification</h3>
+              <p>The result is permanently and transparently recorded on the blockchain.</p>
             </div>
           </div>
         </div>
@@ -107,9 +106,9 @@ const HomePage = () => {
 
       <section className="cta">
         <div className="container">
-          <h2>Prêt à lutter contre la désinformation ?</h2>
-          <p>Rejoignez notre communauté et contribuez à un écosystème numérique plus fiable.</p>
-          <Link to="/verify" className="btn btn-primary">Commencer maintenant</Link>
+          <h2>Ready to fight disinformation?</h2>
+          <p>Join our community and contribute to a more trustworthy digital ecosystem.</p>
+          <Link to="/verify" className="btn btn-primary">Get started now</Link>
         </div>
       </section>
     </div>

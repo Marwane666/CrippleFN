@@ -5,21 +5,21 @@ import './ArchivePage.css';
 const initialArchive = [
   {
     id: '1',
-    title: "Vaccin COVID : la 5G active la puce !",
+    title: "COVID Vaccine: 5G activates the chip!",
     date: '2025-05-17',
     status: 'fake',
     link: 'https://www.example.com/fake-news-1',
   },
   {
     id: '2',
-    title: "Le chat domestique descend du tigre",
+    title: "The domestic cat descends from the tiger",
     date: '2025-05-16',
     status: 'real',
     link: 'https://www.example.com/real-news-2',
   },
   {
     id: '3',
-    title: "La Terre est plate selon une nouvelle étude",
+    title: "The Earth is flat according to a new study",
     date: '2025-05-15',
     status: 'fake',
     link: 'https://www.example.com/fake-news-3',
@@ -27,8 +27,8 @@ const initialArchive = [
 ];
 
 const statusLabel = {
-  fake: 'Fausse',
-  real: 'Vraie',
+  fake: 'Fake',
+  real: 'Real',
 };
 
 const statusColor = {
@@ -53,18 +53,18 @@ export default function ArchivePage() {
   return (
     <div className="archive-page">
       <div className="container">
-        <h1>Archive des vérifications</h1>
-        <p>Retrouvez ici toutes les news déjà vérifiées, avec leur statut.</p>
+        <h1>Verification Archive</h1>
+        <p>Find here all the news already verified, with their status.</p>
         {archive.length === 0 ? (
-          <div style={{padding:'32px',textAlign:'center',color:'#888',fontSize:'1.1em'}}>Aucune news archivée pour le moment.</div>
+          <div style={{padding:'32px',textAlign:'center',color:'#888',fontSize:'1.1em'}}>No archived news at the moment.</div>
         ) : (
         <table className="archive-table">
           <thead>
             <tr>
-              <th>Titre</th>
+              <th>Title</th>
               <th>Date</th>
-              <th>Statut</th>
-              <th>Lien</th>
+              <th>Status</th>
+              <th>Link</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -74,8 +74,8 @@ export default function ArchivePage() {
                 <td>{item.title}</td>
                 <td>{item.date}</td>
                 <td><span className={`archive-status ${statusColor[item.status]}`}>{statusLabel[item.status]}</span></td>
-                <td><a href={item.link} target="_blank" rel="noopener noreferrer">Voir</a></td>
-                <td><button className="btn btn-delete" style={{background:'#e74c3c',color:'#fff'}} onClick={() => handleDelete(item.id)}>Supprimer</button></td>
+                <td><a href={item.link} target="_blank" rel="noopener noreferrer">View</a></td>
+                <td><button className="btn btn-delete" style={{background:'#e74c3c',color:'#fff'}} onClick={() => handleDelete(item.id)}>Delete</button></td>
               </tr>
             ))}
           </tbody>

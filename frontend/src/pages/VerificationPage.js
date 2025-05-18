@@ -7,49 +7,49 @@ const VerificationPage = () => {
   const [activeTab, setActiveTab] = useState('text');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  // États pour les différents formulaires
+
+  // States for the different forms
   const [textInput, setTextInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
   const [files, setFiles] = useState([]);
-  
-  // Vérification de l'authentification utilisateur
+
+  // User authentication check
   useEffect(() => {
     const user = localStorage.getItem('cripplefn_user');
     if (!user) {
-      // Redirige vers la page de connexion si non authentifié
-      navigate('/login', { state: { from: '/verify', message: "Vous devez être connecté pour vérifier un contenu." } });
+      // Redirect to login if not authenticated
+      navigate('/login', { state: { from: '/verify', message: "You must be logged in to verify content." } });
     }
   }, [navigate]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    // Vérifier si des données ont été saisies
+
+    // Check if data is entered
     if (activeTab === 'text' && !textInput.trim()) {
-      setError('Veuillez saisir un texte à vérifier');
+      setError('Please enter text to verify.');
       return;
     }
-    
+
     if (activeTab === 'url' && !urlInput.trim()) {
-      setError('Veuillez saisir une URL à vérifier');
+      setError('Please enter a URL to verify.');
       return;
     }
-    
+
     if (activeTab === 'file' && files.length === 0) {
-      setError('Veuillez sélectionner au moins un fichier à vérifier');
+      setError('Please select at least one file to verify.');
       return;
     }
-    
+
     setIsLoading(true);
 
     try {
-      // Préparer les données à envoyer
+      // Prepare data to send
       const formData = new FormData();
       let newNews = null;
       const now = new Date();
-      const dateStr = now.toLocaleDateString('fr-FR');
+      const dateStr = now.toLocaleDateString('en-US');
       if (activeTab === 'text') {
         formData.append('text', textInput);
         newNews = {
@@ -80,7 +80,7 @@ const VerificationPage = () => {
         }
         newNews = {
           id: 'n_' + Math.random().toString(36).substr(2, 9),
-          title: files[0]?.name || 'Fichier',
+          title: files[0]?.name || 'File',
           description: files.map(f => f.name).join(', '),
           date: dateStr,
           status: 'pending',
@@ -89,64 +89,58 @@ const VerificationPage = () => {
           sources: [],
         };
       }
-      // Ajout dans localStorage (pendingNews)
+      // Add to localStorage (pendingNews)
       if (newNews) {
         const pending = JSON.parse(window.localStorage.getItem('pendingNews') || '[]');
         pending.push(newNews);
         window.localStorage.setItem('pendingNews', JSON.stringify(pending));
       }
-      
-      // Simuler un appel API (à remplacer par l'appel réel)
+
+      // Simulate API call (replace with real call)
       setTimeout(() => {
-        // Simuler une réponse avec un ID de vérification
+        // Simulate a response with a verification ID
         const verificationId = 'ver_' + Math.random().toString(36).substr(2, 9);
-        
-        // Rediriger vers la page des résultats
-        navigate(`/dashboard`); // Redirige vers dashboard pour traiter la news
-        
+        // Redirect to dashboard to process the news
+        navigate(`/dashboard`);
         setIsLoading(false);
       }, 2000);
-      
-      // Appel API réel (à décommenter)
+      // Real API call (uncomment to use)
       /*
       const response = await fetch('http://localhost:8000/verification', {
         method: 'POST',
         body: formData,
       });
-      
       if (!response.ok) {
-        throw new Error('Erreur lors de la soumission de la vérification');
+        throw new Error('Error submitting verification');
       }
-      
       const data = await response.json();
       navigate(`/results/${data.id}`);
       */
-      
     } catch (err) {
-      setError(err.message || 'Une erreur est survenue. Veuillez réessayer.');
+      setError(err.message || 'An error occurred. Please try again.');
       setIsLoading(false);
     }
   };
-  
+
   const handleFileChange = (e) => {
     setFiles(Array.from(e.target.files));
   };
-  
+
   return (
     <div className="verification-page">
       <div className="container">
         <div className="verification-container">
-          <h1>Vérifier un contenu</h1>
+          <h1>Verify Content</h1>
           <p className="verification-description">
-            Soumettez du texte, une URL ou un fichier pour vérifier son authenticité et détecter d'éventuelles manipulations.
+            Submit text, a URL, or a file to verify its authenticity and detect possible manipulations.
           </p>
-          
+
           <div className="verification-tabs">
             <button 
               className={`tab ${activeTab === 'text' ? 'active' : ''}`}
               onClick={() => setActiveTab('text')}
             >
-              Texte
+              Text
             </button>
             <button 
               className={`tab ${activeTab === 'url' ? 'active' : ''}`}
@@ -158,51 +152,51 @@ const VerificationPage = () => {
               className={`tab ${activeTab === 'file' ? 'active' : ''}`}
               onClick={() => setActiveTab('file')}
             >
-              Fichier
+              File
             </button>
           </div>
-          
+
           {error && (
             <div className="alert alert-error">
               {error}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit}>
             {activeTab === 'text' && (
               <div className="form-group">
-                <label htmlFor="text-input">Texte à vérifier</label>
+                <label htmlFor="text-input">Text to verify</label>
                 <textarea
                   id="text-input"
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
-                  placeholder="Collez ici le texte que vous souhaitez vérifier..."
+                  placeholder="Paste here the text you want to verify..."
                   rows={10}
                   required
                 />
               </div>
             )}
-            
+
             {activeTab === 'url' && (
               <div className="form-group">
-                <label htmlFor="url-input">URL à vérifier</label>
+                <label htmlFor="url-input">URL to verify</label>
                 <input
                   type="url"
                   id="url-input"
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
-                  placeholder="https://exemple.com/article"
+                  placeholder="https://example.com/article"
                   required
                 />
                 <div className="form-hint">
-                  Entrez l'URL d'un article, d'une image ou d'une vidéo à vérifier.
+                  Enter the URL of an article, image, or video to verify.
                 </div>
               </div>
             )}
-            
+
             {activeTab === 'file' && (
               <div className="form-group">
-                <label htmlFor="file-input">Fichier(s) à vérifier</label>
+                <label htmlFor="file-input">File(s) to verify</label>
                 <div className="file-upload-container">
                   <input
                     type="file"
@@ -212,14 +206,13 @@ const VerificationPage = () => {
                     accept="image/*,video/*,application/pdf"
                   />
                   <div className="file-upload-label">
-                    <span>Déposez vos fichiers ici ou cliquez pour parcourir</span>
-                    <small>Formats acceptés : images, vidéos, PDF</small>
+                    <span>Drop your files here or click to browse</span>
+                    <small>Accepted formats: images, videos, PDF</small>
                   </div>
                 </div>
-                
                 {files.length > 0 && (
                   <div className="selected-files">
-                    <h4>Fichiers sélectionnés :</h4>
+                    <h4>Selected files:</h4>
                     <ul>
                       {files.map((file, index) => (
                         <li key={index}>
@@ -231,36 +224,36 @@ const VerificationPage = () => {
                 )}
               </div>
             )}
-            
+
             <div className="form-actions">
               <button 
                 type="submit" 
                 className="btn btn-primary" 
                 disabled={isLoading}
               >
-                {isLoading ? 'Vérification en cours...' : 'Vérifier maintenant'}
+                {isLoading ? 'Verifying...' : 'Verify now'}
               </button>
             </div>
           </form>
-          
+
           <div className="verification-info">
-            <h3>Comment fonctionne notre système de vérification ?</h3>
+            <h3>How does our verification system work?</h3>
             <p>
-              Notre plateforme utilise des agents d'intelligence artificielle multimodaux pour analyser les contenus sous différents angles :
+              Our platform uses multimodal artificial intelligence agents to analyze content from different perspectives:
             </p>
             <ul>
               <li>
-                <strong>Analyse de texte :</strong> Détecte les incohérences, les biais et les affirmations non factuelles
+                <strong>Text analysis:</strong> Detects inconsistencies, biases, and non-factual claims
               </li>
               <li>
-                <strong>Analyse visuelle :</strong> Identifie les manipulations d'images et les deepfakes
+                <strong>Visual analysis:</strong> Identifies image manipulations and deepfakes
               </li>
               <li>
-                <strong>Analyse contextuelle :</strong> Évalue la fiabilité des sources et le contexte général
+                <strong>Contextual analysis:</strong> Assesses the reliability of sources and the general context
               </li>
             </ul>
             <p>
-              Les résultats de l'analyse sont certifiés sur la blockchain pour garantir leur transparence et leur immuabilité.
+              The results of the analysis are certified on the blockchain to ensure their transparency and immutability.
             </p>
           </div>
         </div>

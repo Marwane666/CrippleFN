@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './DashboardPage.css';
 
 /**
- * Composant modulaire pour la fenêtre modale de report
+ * Modular component for the report modal window
  */
 function ReportModal({ onClose }) {
   return (
@@ -11,7 +11,7 @@ function ReportModal({ onClose }) {
         <h3 className="modal-title">Report</h3>
         <div className="modal-message">
           <p>
-            Ce rapport signale cette news comme potentiellement fausse ou problématique. Merci de contribuer à la fiabilité de la plateforme.
+            This report flags this news as potentially false or problematic. Thank you for contributing to the reliability of the platform.
           </p>
         </div>
         <button className="btn btn-exit" onClick={onClose}>Exit</button>
@@ -51,7 +51,7 @@ function CommunitySurveyModal({ onClose, onFinish }) {
   const handleSelect = (v) => setSelected(v);
   const handleNext = () => { setStep(step+1); setSelected(null); };
   if (finished) {
-    // Score après la dernière question
+    // Score after the last question
     return (
       <div className="modal-overlay">
         <div className="modal-content">
@@ -91,12 +91,12 @@ function CommunitySurveyModal({ onClose, onFinish }) {
       </div>
     );
   }
-  // Dernière question avec graph placeholder et bouton Finish
+  // Last question with graph placeholder and Finish button
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <h2 style={{textAlign:'center'}}>Community Survey</h2>
-        <div style={{height:60,background:'#f1f1f1',borderRadius:8,marginBottom:16,display:'flex',alignItems:'center',justifyContent:'center',color:'#888'}}>[Graphique à venir]</div>
+        <div style={{height:60,background:'#f1f1f1',borderRadius:8,marginBottom:16,display:'flex',alignItems:'center',justifyContent:'center',color:'#888'}}>[Graph coming soon]</div>
         <div className="survey-question" style={{margin:'24px 0'}}>{questions[3]}</div>
         <div className="survey-options" style={{marginBottom:24}}>
           <label className="survey-option">
@@ -116,15 +116,15 @@ function CommunitySurveyModal({ onClose, onFinish }) {
 }
 
 /**
- * Bloc d'information central : description tronquée, lien, sources et date
+ * Central information block: truncated description, link, sources and date
  */
 const NewsInfoBlock = ({ description, link, sources, date }) => (
   <div className="news-info-block">
-    {/* Description tronquée avec trois points si trop longue */}
+    {/* Truncated description with ellipsis if too long */}
     <p className="news-description" title={description}>{description}</p>
-    {/* Lien de la fake news */}
+    {/* Link to the fake news */}
     <a href={link} target="_blank" rel="noopener noreferrer" className="news-link">{link}</a>
-    {/* Sources et date */}
+    {/* Sources and date */}
     <div className="news-sources">
       {sources.map((src, idx) => (
         <div key={idx} className="news-source-item">
@@ -137,7 +137,7 @@ const NewsInfoBlock = ({ description, link, sources, date }) => (
 );
 
 /**
- * Composant pour afficher une note sous forme d'étoiles
+ * Component to display a score as stars
  */
 function StarScore({ score, maxScore = 5 }) {
   return (
@@ -151,7 +151,7 @@ function StarScore({ score, maxScore = 5 }) {
 }
 
 /**
- * Bloc boutons verticaux, gère l'ouverture de la modale Report et l'affichage dynamique de la note
+ * Vertical button block, handles opening the Report modal and dynamic score display
  */
 const NewsActions = ({
   onReport,
@@ -200,18 +200,18 @@ const NewsActions = ({
   </div>
 );
 
-// Utilitaire pour charger les news à traiter depuis localStorage
+// Utility to load pending news from localStorage
 function getPendingNews() {
   return JSON.parse(window.localStorage.getItem('pendingNews') || '[]');
 }
-// Utilitaire pour archiver une news
+// Utility to archive a news
 function archiveNews(news, status) {
   const archive = JSON.parse(window.localStorage.getItem('archiveNews') || '[]');
   archive.push({ ...news, status });
   window.localStorage.setItem('archiveNews', JSON.stringify(archive));
 }
 
-// --- NewsCard modulaire ---
+// --- Modular NewsCard ---
 function usePersistentScores(newsId) {
   const key = `news-scores-${newsId}`;
   const [scores, setScores] = useState(() => {
@@ -229,35 +229,33 @@ function usePersistentScores(newsId) {
   return [scores, setScores];
 }
 
-function NewsCard({ imageUrl, title, onArchive, onDelete }) {
-  // State pour chaque modale
+function NewsCard({ title, onArchive, onDelete }) {
+  // State for each modal
   const [showReport, setShowReport] = useState(false);
   const [showSurvey, setShowSurvey] = useState(false);
   const [showTarget, setShowTarget] = useState(false);
   const [showAuthor, setShowAuthor] = useState(false);
-  // State pour chaque score
+  // State for each score
   const [scores, setScores] = usePersistentScores(title);
-  // Scores (ici fixes pour la démo, à rendre dynamiques si besoin)
+  // Scores (fixed for demo, make dynamic if needed)
   const reportScore = 4;
   const communityScore = 3;
   const targetScore = 5;
   const lastWordsScore = 2;
   const allScores = [reportScore, communityScore, targetScore, lastWordsScore];
   const finalGrade = Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length);
-  // Exemple de description vraisemblable
-  const description = "Selon plusieurs publications sur les réseaux sociaux, une nouvelle technologie permettrait de recharger son smartphone en 10 secondes grâce à une onde spéciale. Cette information a été massivement relayée sans preuve scientifique.";
-  // Exemple de fausses sources et dates
+  // Example plausible description
+  const description = "According to several social media posts, a new technology would allow you to recharge your smartphone in 10 seconds using a special wave. This information was widely shared without scientific proof.";
+  // Example fake sources and dates
   const sources = [
     'https://www.fauxmedia.com/article-recharge-10s',
     'https://www.rumeurtech.net/onde-miracle',
   ];
-  const date = '15/05/2025';
-  // Affichage
+  const date = '05/15/2025';
+  // Display
   return (
     <div className="news-card" style={{display:'flex',alignItems:'flex-start',gap:24,marginBottom:32}}>
-      {/* Image à gauche */}
-      <img src={imageUrl} alt="news" className="news-image" style={{width:140,height:140,objectFit:'cover',borderRadius:8}} />
-      {/* Bloc central : description, sources, dates */}
+      {/* Main block on the left: title, description, sources, date */}
       <div style={{flex:2,display:'flex',flexDirection:'column',justifyContent:'space-between',height:140}}>
         <div>
           <h3 style={{margin:'0 0 8px 0'}}>{title}</h3>
@@ -272,7 +270,7 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
           ))}
         </div>
       </div>
-      {/* Boutons verticaux à droite */}
+      {/* Vertical buttons on the right */}
       <div className="news-actions" style={{display:'flex',flexDirection:'column',gap:12,alignItems:'stretch',flex:1,minWidth:180, height:'100%'}}>
         <div className="action-row" style={{display:'flex',flexDirection:'column',alignItems:'stretch',gap:8}}>
           <button className="btn btn-report" onClick={() => setShowReport(true)}>Report</button>
@@ -296,12 +294,12 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
               <button className="btn btn-finalgrade" disabled>Final grade</button>
               <StarScore score={finalGrade} />
             </div>
-            <button className="btn btn-archive" onClick={onArchive}>Archiver la news</button>
+            <button className="btn btn-archive" onClick={onArchive}>Archive news</button>
           </div>
         )}
-        <button className="btn btn-delete" style={{marginTop:8, background:'#e74c3c', color:'#fff'}} onClick={onDelete}>Supprimer</button>
+        <button className="btn btn-delete" style={{marginTop:8, background:'#e74c3c', color:'#fff'}} onClick={onDelete}>Delete</button>
       </div>
-      {/* Modales */}
+      {/* Modals */}
       {showReport && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -309,7 +307,7 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
             <div style={{margin:'24px 0'}}>
               <textarea
                 className="report-textarea"
-                value={"Ce contenu présente des signaux de désinformation détectés par l'IA. Merci de contribuer à la fiabilité de la plateforme."}
+                value={"This content shows signs of misinformation detected by AI. Thank you for contributing to the reliability of the platform."}
                 readOnly
                 rows={5}
                 style={{width:'100%'}}
@@ -326,14 +324,9 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
         <div className="modal-overlay">
           <div className="modal-content victim-modal">
             <h2 style={{textAlign:'center'}}>Target Report</h2>
-            <div style={{display:'flex',alignItems:'center',gap:24}}>
-              <div style={{flex:1}}>
-                <div style={{marginBottom:12}}>
-                  "Je tiens à clarifier que les informations diffusées à mon sujet sont totalement fausses. J'ai pris la parole publiquement pour rétablir la vérité et je remercie tous ceux qui m'ont soutenu durant cette période difficile."
-                </div>
-              </div>
-              <div style={{flex:1}}>
-                <img src="/assets/victim-interview.jpg" alt="Victim public statement" style={{maxWidth:'100%',borderRadius:8}} />
+            <div style={{flex:1}}>
+              <div style={{marginBottom:12}}>
+                "I want to clarify that the information spread about me is completely false. I spoke out publicly to set the record straight and thank everyone who supported me during this difficult time."
               </div>
             </div>
             <button className="btn btn-exit" onClick={() => { setShowTarget(false); setScores(s => ({...s, showTargetScore:true})); }}>Exit</button>
@@ -344,14 +337,9 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
         <div className="modal-overlay">
           <div className="modal-content author-modal">
             <h2 style={{textAlign:'center'}}>Last Words Author</h2>
-            <div style={{display:'flex',alignItems:'center',gap:24}}>
-              <div style={{flex:1}}>
-                <div style={{marginBottom:12}}>
-                  "Nous avons publié cette information sans vérifier sa véracité. Nous regrettons l'impact que cela a pu avoir et présentons nos excuses à la personne concernée."
-                </div>
-              </div>
-              <div style={{flex:1}}>
-                <img src="/assets/author-statement.jpg" alt="Author public statement" style={{maxWidth:'100%',borderRadius:8}} />
+            <div style={{flex:1}}>
+              <div style={{marginBottom:12}}>
+                "We published this information without verifying its accuracy. We regret the impact this may have had and apologize to the person concerned."
               </div>
             </div>
             <button className="btn btn-exit" onClick={() => { setShowAuthor(false); setScores(s => ({...s, showLastWordsScore:true})); }}>Exit</button>
@@ -362,34 +350,34 @@ function NewsCard({ imageUrl, title, onArchive, onDelete }) {
   );
 }
 
-// Page Tableau de bord : affiche une news fake
+// Dashboard page: displays a fake news item
 export default function DashboardPage() {
-  // State pour la liste des news à traiter
+  // State for the list of news to process
   const [pendingNews, setPendingNews] = useState(getPendingNews());
-  // Effet pour garder la liste à jour
+  // Effect to keep the list up to date
   React.useEffect(() => {
     setPendingNews(getPendingNews());
   }, []);
-  // Fonction pour archiver et retirer la news du dashboard
+  // Function to archive and remove the news from the dashboard
   function handleArchive(news) {
     archiveNews(news, Math.round((2+4+3+1)/4) < 3 ? 'fake' : 'real');
     const updated = getPendingNews().filter(n => n.id !== news.id);
     window.localStorage.setItem('pendingNews', JSON.stringify(updated));
     setPendingNews(updated);
   }
-  // Fonction pour supprimer une news
+  // Function to delete a news
   function handleDelete(news) {
     const updated = getPendingNews().filter(n => n.id !== news.id);
     window.localStorage.setItem('pendingNews', JSON.stringify(updated));
     setPendingNews(updated);
-    // Supprime aussi les scores persistés
+    // Also remove persisted scores
     window.localStorage.removeItem(`news-scores-${news.title}`);
   }
   return (
     <div className="dashboard-page">
-      <h2>Tableau de bord</h2>
+      <h2>Dashboard</h2>
       {pendingNews.length === 0 ? (
-        <div style={{padding:'32px',textAlign:'center',color:'#888',fontSize:'1.1em'}}>Aucune news à analyser pour le moment.</div>
+        <div style={{padding:'32px',textAlign:'center',color:'#888',fontSize:'1.1em'}}>No news to analyze at the moment.</div>
       ) : (
         pendingNews.map(news => (
           <NewsCard key={news.id} {...news} onArchive={() => handleArchive(news)} onDelete={() => handleDelete(news)} />
@@ -401,11 +389,11 @@ export default function DashboardPage() {
 
 // --- Victim Report Modal ---
 function VictimReportModal({ onClose }) {
-  // Exemple de texte d'interview et vidéo/screenshot
+  // Example interview text and video/screenshot
   const interviewText = `
-    "Je tiens à clarifier que les informations diffusées à mon sujet sont totalement fausses. J'ai pris la parole publiquement pour rétablir la vérité et je remercie tous ceux qui m'ont soutenu durant cette période difficile."
+    "I want to clarify that the information spread about me is completely false. I spoke out publicly to set the record straight and thank everyone who supported me during this difficult time."
   `;
-  const victimMedia = '/assets/victim-interview.jpg'; // Remplacer par une vidéo ou une image réelle si besoin
+  const victimMedia = '/assets/victim-interview.jpg'; // Replace with a real video or image if needed
 
   return (
     <div className="modal-overlay">
@@ -427,11 +415,11 @@ function VictimReportModal({ onClose }) {
 
 // --- Last Words Author Modal ---
 function LastWordsAuthorModal({ onClose }) {
-  // Exemple de texte et image de l'auteur de la fake news
+  // Example text and image of the fake news author
   const authorText = `
-    "Nous avons publié cette information sans vérifier sa véracité. Nous regrettons l'impact que cela a pu avoir et présentons nos excuses à la personne concernée."
+    "We published this information without verifying its accuracy. We regret the impact this may have had and apologize to the person concerned."
   `;
-  const authorMedia = '/assets/author-statement.jpg'; // Remplacer par une image réelle si besoin
+  const authorMedia = '/assets/author-statement.jpg'; // Replace with a real image if needed
 
   return (
     <div className="modal-overlay">
