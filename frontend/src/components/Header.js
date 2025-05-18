@@ -74,6 +74,9 @@ const Header = () => {
             <li>
               <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link>
             </li>
+            <li>
+              <Link to="/thread" className={location.pathname === '/thread' ? 'active' : ''}>News Thread</Link>
+            </li>
           </ul>
         </nav>
         <div className="user-actions">

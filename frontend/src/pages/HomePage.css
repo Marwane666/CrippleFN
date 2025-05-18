@@ -4,10 +4,14 @@
 
 /* Hero Section */
 .hero {
-  padding: 4rem 0;
-  background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+  background: linear-gradient(135deg, #06696D 0%, #0e8a8e 100%);
   color: white;
-  margin-bottom: 3rem;
+  padding: 4rem 0 3rem 0;
+  border-radius: 0;
+  box-shadow: 0 4px 24px rgba(6,105,109,0.08);
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .hero .container {
@@ -21,17 +25,23 @@
   max-width: 600px;
 }
 
-.hero h1 {
+.hero-content h1 {
   font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  line-height: 1.2;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(6,105,109,0.13);
+  background: linear-gradient(90deg, #e0f7fa 0%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero-subtitle {
-  font-size: 1.125rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+  font-size: 1.25rem;
+  margin-bottom: 2.2rem;
+  color: #e0f7fa;
+  text-shadow: 0 1px 8px rgba(6,105,109,0.10);
 }
 
 .hero-buttons {

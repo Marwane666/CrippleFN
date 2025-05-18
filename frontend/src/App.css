@@ -1,6 +1,7 @@
 /* Base styles for the application */
 :root {
-  --primary-color: #3b82f6;
+  --primary-color: #06696d;
+  --primary-dark: #054d54;
   --secondary-color: #10b981;
   --accent-color: #f59e0b;
   --text-color: #1f2937;
@@ -37,7 +38,7 @@ a:hover {
   text-decoration: underline;
 }
 
-button, .btn {
+button, .btn, .btn-connect {
   display: inline-block;
   background-color: var(--primary-color);
   color: white;
@@ -49,8 +50,8 @@ button, .btn {
   transition: background-color 0.2s ease;
 }
 
-button:hover, .btn:hover {
-  background-color: #2563eb;
+button:hover, .btn:hover, .btn-connect:hover {
+  background-color: var(--primary-dark);
   text-decoration: none;
 }
 
@@ -73,7 +74,7 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 3px rgba(6, 105, 109, 0.2);
 }
 
 .container {
