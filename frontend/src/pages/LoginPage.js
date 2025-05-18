@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../components/Auth.css";
 
 // Simule un contexte utilisateur localStorage (à remplacer par API backend)
@@ -11,7 +11,11 @@ function setUserSession(user) {
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showSignup, setShowSignup] = React.useState(false);
+
+  // Message d'incitation si redirigé depuis /verify
+  const message = location.state?.message;
 
   // Callback pour la connexion
   const handleLogin = async ({ email, password }) => {
@@ -34,6 +38,9 @@ function LoginPage() {
   return (
     <div style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
+        {message && (
+          <div className="auth-error" role="alert" style={{ marginBottom: 16 }}>{message}</div>
+        )}
         {showSignup ? (
           <>
             <SignupForm onSignup={handleSignup} />

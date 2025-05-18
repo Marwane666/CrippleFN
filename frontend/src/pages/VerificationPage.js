@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './VerificationPage.css';
 
@@ -12,6 +12,15 @@ const VerificationPage = () => {
   const [textInput, setTextInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
   const [files, setFiles] = useState([]);
+  
+  // Vérification de l'authentification utilisateur
+  useEffect(() => {
+    const user = localStorage.getItem('cripplefn_user');
+    if (!user) {
+      // Redirige vers la page de connexion si non authentifié
+      navigate('/login', { state: { from: '/verify', message: "Vous devez être connecté pour vérifier un contenu." } });
+    }
+  }, [navigate]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();

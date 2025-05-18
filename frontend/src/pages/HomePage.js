@@ -1,8 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './HomePage.css';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const user = localStorage.getItem('cripplefn_user');
+
+  const handleVerifyClick = () => {
+    if (!user) {
+      navigate('/login', { state: { from: '/', message: "Vous devez être connecté pour vérifier un contenu." } });
+    } else {
+      navigate('/verify');
+    }
+  };
+
   return (
     <div className="home-page">
       <section className="hero">
@@ -14,7 +25,7 @@ const HomePage = () => {
               l'authenticité des contenus et combattre les fake news.
             </p>
             <div className="hero-buttons">
-              <Link to="/verify" className="btn btn-primary">Vérifier un contenu</Link>
+              <button onClick={handleVerifyClick} className="btn btn-primary">Vérifier un contenu</button>
               <Link to="/about" className="btn btn-secondary">En savoir plus</Link>
             </div>
           </div>
